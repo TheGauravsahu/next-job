@@ -15,10 +15,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import LoadingButton from "../general/loading-button";
 import PasswordInput from "../ui/password-input";
-import { useRegister } from "@/hooks/useAuth";
+import { useLogin } from "@/hooks/useAuth";
 
 const formSchema = z.object({
-  name: z.string().min(2, { message: "Name must be at least 2 characters." }),
   email: z
     .string()
     .email({ message: "Please enter a valid email address." })
@@ -28,22 +27,22 @@ const formSchema = z.object({
     .min(6, { message: "Password must be at least 6 characters." }),
 });
 
-export type RegisterFormValues = z.infer<typeof formSchema>;
+export type LoginFormValues = z.infer<typeof formSchema>;
 
-export default function RegisterForm() {
-  const { mutate: register, isPending } = useRegister();
+export default function LoginForm() {
+  const { mutate: login, isPending } = useLogin();
 
-  const form = useForm<RegisterFormValues>({
+  const form = useForm<LoginFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
       email: "",
       password: "",
     },
   });
 
-  function onSubmit(values: RegisterFormValues) {
-    register(values);
+  function onSubmit(values: LoginFormValues) {
+    login(values);
+
   }
 
   return (
@@ -51,26 +50,12 @@ export default function RegisterForm() {
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
         <FormField
           control={form.control}
-          name="name"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Name</FormLabel>
-              <FormControl>
-                <Input placeholder="John Doe" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="john@example.com" {...field} />
+                <Input placeholder="John Doe" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -86,14 +71,13 @@ export default function RegisterForm() {
               <FormControl>
                 <PasswordInput placeholder="password" {...field} />
               </FormControl>
-
               <FormMessage />
             </FormItem>
           )}
         />
 
-        <LoadingButton loadingText="Registering" isLoading={isPending}>
-          Register
+        <LoadingButton isLoading={isPending} loadingText="Logging in">
+          Login
         </LoadingButton>
       </form>
     </Form>

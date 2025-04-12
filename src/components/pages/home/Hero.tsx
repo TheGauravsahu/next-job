@@ -12,7 +12,7 @@ export default function Hero() {
       />
 
       <div className="flex flex-col gap-4 items-center">
-        <div className="inline-flex cursor-pointer items-center px-3 py-1 border border-blue-500 text-blue-600 rounded-full text-sm font-medium hover:bg-blue-50 transition">
+        <div className="inline-flex cursor-pointer items-center px-3 py-1 border border-blue-500 text-blue-600 rounded-full text-sm font-medium hover:bg-blue-50 dark:hover:bg-blue-950 transition">
           <ThumbsUp className="w-4 h-4 mr-1.5" />
           <span>#1 Top greatest on Product Hunt</span>
         </div>

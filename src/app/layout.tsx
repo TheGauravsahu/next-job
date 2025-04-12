@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Toaster } from "@/components/ui/sonner";
 import { Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
+import ReactQueryProvider from "@/components/ReactQueryProvider";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const plusJakartaSans = Plus_Jakarta_Sans({
   variable: "--font-montserrat",
@@ -21,10 +23,19 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${plusJakartaSans.variable}  antialiased`}>
-        <main className="min-h-screen">
-          {children}
-          <Toaster />
-        </main>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <ReactQueryProvider>
+            <main className="min-h-screen">
+              {children}
+              <Toaster />
+            </main>
+          </ReactQueryProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

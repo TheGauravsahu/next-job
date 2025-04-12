@@ -1,9 +1,14 @@
+"use client";
+
 import Link from "next/link";
 import React from "react";
 import { Button } from "../ui/button";
 import ThemeToggler from "../ThemeToggler";
+import { useAuthStore } from "@/store/auth";
 
 export default function Header() {
+  const { user } = useAuthStore();
+
   return (
     <header className="flex items-center justify-between mb-4 fixed top-0 right-0 left-0 h-16 z-50 bg-white dark:bg-black px-12">
       <div>
@@ -12,7 +17,7 @@ export default function Header() {
         </h1>
       </div>
 
-      <nav className="flex space-x-4">
+      <nav className="flex gap-4 items-center justify-center">
         <Link href="/">Find a Job</Link>
         <Link href="/">Companies</Link>
         <Link href="/">How it works</Link>
@@ -21,8 +26,20 @@ export default function Header() {
 
       <div className="flex items-center gap-2">
         <ThemeToggler />
-        <Button variant="ghost">Login</Button>
-        <Button variant="gradient">Signup</Button>
+
+        {user ? (
+          <span className="text-muted-foreground">{user.name}</span>
+        ) : (
+          <>
+            <Link prefetch href="/login">
+              <Button variant="ghost">Login</Button>
+            </Link>
+
+            <Link prefetch href="/register">
+              <Button variant="gradient">Signup</Button>
+            </Link>
+          </>
+        )}
       </div>
     </header>
   );

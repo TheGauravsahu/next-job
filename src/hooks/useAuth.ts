@@ -1,20 +1,30 @@
 import { LoginFormValues } from "@/components/auth/LoginForm";
 import { RegisterFormValues } from "@/components/auth/RegisterForm";
-import { loginUser, registerUser } from "@/services/auth.service";
+import {
+  loginUser,
+  registerUser,
+  sendOtp,
+  verifyOtp,
+} from "@/services/auth.service";
 import { useAuthStore } from "@/store/auth";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
-import {  APIError } from "@/types/auth.types"; 
+import { APIError } from "@/types/auth.types";
 
 export const useRegister = () => {
   const router = useRouter();
+  const { setUser } = useAuthStore();
 
   return useMutation({
     mutationFn: (data: RegisterFormValues) => registerUser(data),
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast.success("Account created successfully.");
-      router.push("/login");
+
+      // console.log(data);
+      setUser(data);
+
+      router.push("/verify-email");
     },
     onError: (error: APIError) => {
       console.log(error);
@@ -39,6 +49,40 @@ export const useLogin = () => {
       setUser(data.user);
 
       router.push("/");
+    },
+    onError: (error: APIError) => {
+      console.log(error);
+      toast.error(
+        error?.response?.data?.errorMessage || "Something went wrong."
+      );
+    },
+  });
+};
+
+export const useSendOtp = () => {
+  return useMutation({
+    mutationFn: (email: string) => sendOtp(email),
+    onSuccess: (data) => {
+      toast.success(data.message);
+      console.log(data);
+    },
+    onError: (error: APIError) => {
+      console.log(error);
+      toast.error(
+        error?.response?.data?.errorMessage || "Something went wrong."
+      );
+    },
+  });
+};
+
+export const useVerifyOtp = () => {
+  const router = useRouter();
+
+  return useMutation({
+    mutationFn: verifyOtp,
+    onSuccess: (data) => {
+      toast.success(data.message);
+      router.push("/login");
     },
     onError: (error: APIError) => {
       console.log(error);

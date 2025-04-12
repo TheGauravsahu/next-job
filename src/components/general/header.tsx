@@ -5,9 +5,19 @@ import React from "react";
 import { Button } from "../ui/button";
 import ThemeToggler from "../ThemeToggler";
 import { useAuthStore } from "@/store/auth";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { LogOut, User } from "lucide-react";
 
 export default function Header() {
-  const { user } = useAuthStore();
+  const { token, user, logout } = useAuthStore();
 
   return (
     <header className="flex items-center justify-between mb-4 fixed top-0 right-0 left-0 h-16 z-50 bg-white dark:bg-black px-12">
@@ -27,8 +37,30 @@ export default function Header() {
       <div className="flex items-center gap-2">
         <ThemeToggler />
 
-        {user ? (
-          <span className="text-muted-foreground">{user.name}</span>
+        {user && token ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger>
+              <Avatar className="cursor-pointer">
+                <AvatarFallback>
+                  {user.name
+                    .split(" ")
+                    .map((word) => word[0])
+                    .join("")
+                    .toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="*:cursor-pointer">
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <User />Profile
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => logout()}>
+                <LogOut /> Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         ) : (
           <>
             <Link prefetch href="/login">

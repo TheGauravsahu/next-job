@@ -17,7 +17,18 @@ export const sendOtp = async (email: string) => {
   return res.data;
 };
 
-export const verifyOtp = async ({ email, otp }: { email: string; otp: string }) => {
+export const verifyOtp = async ({
+  email,
+  otp,
+}: {
+  email: string;
+  otp: string;
+}) => {
   const res = await api.post(`/users/verify-otp/${email}/${otp}`);
   return res.data;
+};
+
+export const logoutUser = async () => {
+  const response = await api.post("/users/logout");
+  return response.data;
 };

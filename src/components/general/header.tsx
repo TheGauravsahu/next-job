@@ -15,20 +15,31 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { LogOut, User } from "lucide-react";
+import { useLogout } from "@/hooks/useAuth";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
-  const { token, user, logout } = useAuthStore();
+  const { token, user } = useAuthStore();
+  const pathname = usePathname();
+
+  // console.log(pathname);
+
+  const { mutate: logout } = useLogout();
 
   return (
-    <header className="flex items-center justify-between mb-4 fixed top-0 right-0 left-0 h-16 z-50 bg-white dark:bg-black px-12">
-      <div>
+    <header
+      className={`flex items-center justify-between mb-4 fixed top-0 right-0 left-0 h-16 z-50 px-12  bg-white ${
+        pathname === "/" ? "dark:bg-black" : "dark:bg-background"
+      }`}
+    >
+      <Link href="/" prefetch>
         <h1 className="font-bold text-xl bg-gradient-to-b from-blue-400 to-blue-700 bg-clip-text text-transparent">
           NextJob
         </h1>
-      </div>
+      </Link>
 
-      <nav className="flex gap-4 items-center justify-center">
-        <Link href="/">Find a Job</Link>
+      <nav className="hidden md:flex gap-4 items-center justify-center">
+        <Link href="/jobs">Find a Job</Link>
         <Link href="/">Companies</Link>
         <Link href="/">How it works</Link>
         <Link href="/">Contact</Link>
@@ -54,7 +65,8 @@ export default function Header() {
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuItem>
-                <User />Profile
+                <User />
+                Profile
               </DropdownMenuItem>
               <DropdownMenuItem onClick={() => logout()}>
                 <LogOut /> Logout

@@ -4,7 +4,7 @@ import { Sparkles } from "lucide-react";
 
 export default function FooterCTA() {
   return (
-    <div className="w-full h-[75vh]  md:h-[45vh] rounded-4xl p-8 bg-gradient-to-b from-blue-400 to-blue-700 text-white">
+    <div className="w-full h-[45vh]  md:h-[45vh] rounded-4xl p-8 bg-gradient-to-b from-blue-400 to-blue-700 text-white">
       <div className="flex flex-col">
         <h1 className="font-bold text-4xl">
           Transforming the Way you Find Jobs

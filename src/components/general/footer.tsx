@@ -3,8 +3,8 @@ import React from "react";
 
 export default function Footer() {
   return (
-    <div className="flex items-center justify-around py-8 pb-18 h-[35vh] border-t">
-      <div className="w-1/3">
+    <div className="flex flex-col md:flex-row md:items-center gap-8 md:gap-0 justify-around p-8 md:p-0 py-8 pb-18 md:h-[35vh] border-t">
+      <div className="md:w-1/3">
         <h1 className="font-semibold text-xl mb-2">NextJob</h1>
         <p className="text-muted-foreground w-xs">
           NextJob helps you to connect with job opportunities tailored to your
@@ -16,7 +16,7 @@ export default function Footer() {
         <h1 className="font-semibold text-xl mb-4">Technology</h1>
         <div className="flex flex-col space-y-0.5 *:text-muted-foreground *:hover:text-foreground">
           <Link href="/">Search for Jobs</Link>
-          <Link href="/">Browse Jobs</Link>
+          <Link href="/jobs">Browse Jobs</Link>
           <Link href="/">Browse Companies</Link>
           <Link href="/">Career Advice</Link>
         </div>

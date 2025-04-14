@@ -12,9 +12,9 @@ import Link from "next/link";
 
 export default function RegisterPage() {
   return (
-    <div className="w-full h-screen">
+    <div className="w-full h-full">
       <div className="flex items-center justify-center h-screen w-full">
-        <Card className="md:w-[35vw] w-[90%] md:p-4 py-8">
+        <Card className="md:w-[35rem] w-[90%] md:p-4 py-8">
           <CardHeader>
             <CardTitle>
               <h1 className="text-center md:text-3xl text-xl font-bold">

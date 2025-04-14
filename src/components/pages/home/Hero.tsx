@@ -19,8 +19,8 @@ export default function Hero() {
 
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)] dark:bg-black"></div>
 
-        <div className="w-3xl mx-auto *:text-center items-center justify-center">
-          <h1 className="text-6xl font-bold leading-16.5">
+        <div className="md:w-3xl mx-auto *:text-center items-center justify-center p-2">
+          <h1 className="md:text-6xl text-5xl font-bold md:leading-16.5 leading-14">
             Supporting
             <span className="bg-gradient-to-b from-blue-400 to-blue-700 bg-clip-text text-transparent">
               {" "}
@@ -28,7 +28,7 @@ export default function Hero() {
             </span>
             Every Step of the Way
           </h1>
-          <p className="mt-6 text-muted-foreground text-xl max-w-2xl mx-auto">
+          <p className="mt-6 text-muted-foreground md:text-xl max-w-2xl mx-auto">
             Unlock true potential and discover a world of opportunities that
             align with your skills, interest and aspirations
           </p>

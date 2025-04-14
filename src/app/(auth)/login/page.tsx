@@ -5,6 +5,7 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
+  CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
 import React from "react";
@@ -13,20 +14,23 @@ export default function LoginPage() {
   return (
     <div className="h-full w-full">
       <div className="h-screen w-full flex items-center justify-center">
-        <Card className="w-[90%] md:w-[35rem]">
+        <Card className="w-[90%] md:w-[35rem] md:p-4 py-8">
           <CardHeader>
-            <h1 className="text-center md:text-3xl text-xl font-bold">
-              Login to{" "}
-              <Link href="/">
-                <span className="bg-gradient-to-b from-blue-400 to-blue-700 bg-clip-text text-transparent tracking-tight">
-                  Next Job
-                </span>
-              </Link>
-            </h1>
+            <CardTitle>
+              <h1 className="text-center md:text-3xl text-xl font-bold">
+                Login to{" "}
+                <Link href="/">
+                  <span className="bg-gradient-to-b from-blue-400 to-blue-700 bg-clip-text text-transparent tracking-tight">
+                    Next Job
+                  </span>
+                </Link>
+              </h1>
+            </CardTitle>
+            <CardDescription className="text-center text-lg">
+              Login to your account.
+            </CardDescription>
           </CardHeader>
-          <CardDescription className="text-center text-lg">
-            Login to your account.
-          </CardDescription>
+
           <CardContent>
             <LoginForm />
           </CardContent>

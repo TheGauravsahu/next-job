@@ -42,9 +42,14 @@ export default function OtpForm() {
   const sendOtpMutation = useSendOtp();
   const verifyOtpMutation = useVerifyOtp();
 
+
   useEffect(() => {
-    sendOtpMutation.mutate(user?.email as string);
-  }, [sendOtpMutation, user?.email]);
+    if (user?.email) {
+      sendOtpMutation.mutate(user.email);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  
 
   const form = useForm<OtpFormValues>({
     resolver: zodResolver(formSchema),

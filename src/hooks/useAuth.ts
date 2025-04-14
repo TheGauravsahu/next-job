@@ -2,6 +2,7 @@ import { LoginFormValues } from "@/components/auth/LoginForm";
 import { RegisterFormValues } from "@/components/auth/RegisterForm";
 import {
   loginUser,
+  logoutUser,
   registerUser,
   sendOtp,
   verifyOtp,
@@ -41,7 +42,7 @@ export const useLogin = () => {
 
   return useMutation({
     mutationFn: (data: LoginFormValues) => loginUser(data),
-    onSuccess: (data) => {
+    onSuccess: async (data) => {
       toast.success("Logged in successfully.");
 
       // console.log(data);
@@ -83,6 +84,24 @@ export const useVerifyOtp = () => {
     onSuccess: (data) => {
       toast.success(data.message);
       router.push("/login");
+    },
+    onError: (error: APIError) => {
+      console.log(error);
+      toast.error(
+        error?.response?.data?.errorMessage || "Something went wrong."
+      );
+    },
+  });
+};
+
+export const useLogout = () => {
+  const { logout } = useAuthStore();
+
+  return useMutation({
+    mutationFn: logoutUser,
+    onSuccess: async (data) => {
+      logout();
+      toast.success(data.message);
     },
     onError: (error: APIError) => {
       console.log(error);

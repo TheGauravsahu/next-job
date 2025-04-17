@@ -1,6 +1,9 @@
-import { getAllJobs } from "@/services/job.service";
-import { JobSummaryType } from "@/types/job.types";
-import { useQuery } from "@tanstack/react-query";
+import { createJob, getAllJobs } from "@/services/job.service";
+import { APIError } from "@/types/auth.types";
+import { CreateJobFormValues, JobSummaryType } from "@/types/job.types";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
 
 export const useJobList = () => {
   return useQuery<JobSummaryType[]>({
@@ -8,5 +11,25 @@ export const useJobList = () => {
     queryFn: getAllJobs,
     staleTime: 1000 * 60 * 5,
     retry: 1,
+  });
+};
+
+export const useCreateJob = () => {
+  const router = useRouter();
+
+  return useMutation({
+    mutationFn: (data: CreateJobFormValues) => createJob(data),
+    onSuccess: (data: { message: string }) => {
+      console.log(data);
+      
+      toast.success(data.message);
+      router.push("/jobs");
+    },
+    onError: (error: APIError) => {
+      console.log(error);
+      toast.error(
+        error.response?.data?.errorMessage || "Failed to create job."
+      );
+    },
   });
 };

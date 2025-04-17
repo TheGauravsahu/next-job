@@ -1,9 +1,12 @@
 import JobsList from "@/components/pages/Jobs/JobsList";
 import { Button } from "@/components/ui/button";
+import { auth } from "@/lib/auth";
 import Link from "next/link";
 import React from "react";
 
-export default function JobPage() {
+export default async function JobPage() {
+  const { user } = await auth();
+
   return (
     <div className="py-32 px-16 h-full w-full ">
       <div className="w-full flex items-center justify-between mb-8">
@@ -14,9 +17,12 @@ export default function JobPage() {
             Next Job
           </span>
         </h1>
-        <Link href="/">
-          <Button variant="gradient">Create a Job</Button>
-        </Link>
+
+        {user?.role === "EMPLOYER" && (
+          <Link href="/jobs/create">
+            <Button variant="gradient">Create a Job</Button>
+          </Link>
+        )}
       </div>
       <JobsList />
     </div>

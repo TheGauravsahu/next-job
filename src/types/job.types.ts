@@ -1,8 +1,11 @@
+import { createJobSchema } from "@/components/pages/CreateJob/CreateJobSchema";
+import { z } from "zod";
+
 export interface JobSummaryType {
   id: string;
   title: string;
-  salary: number; 
-  salaryFrequency: string; 
+  salary: number;
+  salaryFrequency: string;
   skills: string[];
   companyName: string;
   companyLogo: string;
@@ -11,3 +14,5 @@ export interface JobSummaryType {
   workplaceType: string;
   postedAt: string;
 }
+
+export type CreateJobFormValues = z.infer<typeof createJobSchema>;

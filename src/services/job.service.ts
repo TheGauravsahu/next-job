@@ -12,6 +12,10 @@ export const createJob = async (data: CreateJobFormValues) => {
     skills: [...data.skills.map((skill) => skill.text)],
   };
 
-  console.log("TRANSFORMED-JOB", job);
+  // console.log("TRANSFORMED-JOB", job);
   return (await api.post("/jobs", job)).data;
+};
+
+export const getJobById = async (id: string) => {
+  return (await api.get("/jobs/" + id)).data;
 };

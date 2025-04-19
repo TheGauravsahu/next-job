@@ -4,6 +4,7 @@ import { formatDate, formatSalary } from "@/lib/utils";
 import { JobSummaryType } from "@/types/job.types";
 import { Bookmark } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 export default function JobCard({ job }: { job: JobSummaryType }) {
@@ -63,9 +64,11 @@ export default function JobCard({ job }: { job: JobSummaryType }) {
             <h2>{formatSalary(job.salary, job.salaryFrequency)}</h2>
             <p className="text-muted-foreground">{job.companyLocation}</p>
           </div>
-          <Button variant="outline" className="rounded-full">
-            Details
-          </Button>
+          <Link href={"/jobs/" + job.id}>
+            <Button variant="outline" className="rounded-full">
+              Details
+            </Button>
+          </Link>
         </div>
       </div>
     </div>
@@ -93,7 +96,7 @@ export function JobCardSkeleton() {
           </div>
 
           <div className="w-full flex flex-wrap items-center gap-2 py-1">
-            {[1, 2, 3, 4,5].map((item) => (
+            {[1, 2, 3, 4].map((item) => (
               <Skeleton key={item} className="h-7 rounded-full w-[90px]" />
             ))}
           </div>

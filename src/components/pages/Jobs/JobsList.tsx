@@ -23,7 +23,7 @@ export default function JobsList() {
 
 function JobsListSkeleton() {
   return (
-    <div className="flex flex-wrap gap-5 justify-center md:justify-start items-start max-w-6xl w-full">
+    <div className="flex flex-wrap gap-8 md:gap-6 justify-center md:justify-start items-start max-w-6xl w-full">
       {[1, 2, 3].map((item) => (
         <JobCardSkeleton key={item} />
       ))}

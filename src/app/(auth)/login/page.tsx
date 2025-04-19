@@ -10,7 +10,15 @@ import {
 import Link from "next/link";
 import React from "react";
 
-export default function LoginPage() {
+interface LoginPageProps {
+  searchParams: Promise<{ redirect: string }>;
+}
+
+export default async function LoginPage({ searchParams }: LoginPageProps) {
+  const { redirect } = await searchParams;
+
+  // console.log(redirect, "REDIRECT_URL");
+
   return (
     <div className="h-full w-full">
       <div className="h-screen w-full flex items-center justify-center">
@@ -32,7 +40,7 @@ export default function LoginPage() {
           </CardHeader>
 
           <CardContent>
-            <LoginForm />
+            <LoginForm redirectTo={redirect} />
           </CardContent>
           <CardFooter>
             Don&apos;t have an account ?

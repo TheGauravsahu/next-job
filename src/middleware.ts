@@ -1,23 +1,26 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const AUTH_ROUTES = ["/login", "/register", "/verify-email"];
-const PRIVATE_ROUTES = ["/contact"];
+const PUBLIC_ROUTES = ["/", "/login", "/register", "/verify-email", "/jobs"];
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const token = request.cookies.get("token")?.value;
-
   const { pathname } = request.nextUrl;
 
-  const isAuthRoute = AUTH_ROUTES.includes(pathname);
-  const isPrivateRoute = PRIVATE_ROUTES.includes(pathname);
+  const isPublicRoute = PUBLIC_ROUTES.includes(pathname);
 
-  if (token && isAuthRoute) {
-    return NextResponse.redirect(new URL("/", request.url));
+  if (!token && !isPublicRoute) {
+    const redirectUrl = new URL("/login", request.url);
+    redirectUrl.searchParams.set("redirect", pathname);
+    return NextResponse.redirect(redirectUrl);
   }
 
-  if (!token && isPrivateRoute) {
-    return NextResponse.redirect(new URL("/login", request.url));
+  if (token && ["/login", "/register", "/verify-email"].includes(pathname)) {
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   return NextResponse.next();
 }
+
+export const config = {
+  matcher: ["/((?!_next|static|favicon.ico).*)"],
+};

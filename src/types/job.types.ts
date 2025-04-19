@@ -16,3 +16,10 @@ export interface JobSummaryType {
 }
 
 export type CreateJobFormValues = z.infer<typeof createJobSchema>;
+
+export interface JobDetailsType extends JobSummaryType {
+  description: string;
+  category: string;
+  postedByEmail: string;
+  employerName: string;
+}

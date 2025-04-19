@@ -8,7 +8,7 @@ export default async function JobPage() {
   const { user } = await auth();
 
   return (
-    <div className="py-32 px-16 h-full w-full ">
+    <div className="px-4 py-4 h-full w-full ">
       <div className="w-full flex items-center justify-between mb-8">
         <h1 className="text-3xl font-bold">
           Find Your

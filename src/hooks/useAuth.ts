@@ -36,7 +36,7 @@ export const useRegister = () => {
   });
 };
 
-export const useLogin = () => {
+export const useLogin = (redirectTo: string) => {
   const router = useRouter();
   const { setToken, setUser } = useAuthStore();
 
@@ -49,7 +49,7 @@ export const useLogin = () => {
       setToken(data.token);
       setUser(data.user);
 
-      router.push("/");
+      router.push(redirectTo);
     },
     onError: (error: APIError) => {
       console.log(error);
@@ -96,11 +96,13 @@ export const useVerifyOtp = () => {
 
 export const useLogout = () => {
   const { logout } = useAuthStore();
+  const router = useRouter();
 
   return useMutation({
     mutationFn: logoutUser,
     onSuccess: async (data) => {
       logout();
+      router.refresh();
       toast.success(data.message);
     },
     onError: (error: APIError) => {

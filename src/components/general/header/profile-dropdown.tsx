@@ -50,7 +50,7 @@ export default function ProfileDropdown() {
           </DropdownMenuContent>
         </DropdownMenu>
       ) : (
-        <>
+        <div className="flex items-center gap-1">
           <Link prefetch href="/login">
             <Button variant="ghost">Login</Button>
           </Link>
@@ -58,7 +58,7 @@ export default function ProfileDropdown() {
           <Link prefetch href="/register">
             <Button variant="gradient">Signup</Button>
           </Link>
-        </>
+        </div>
       )}
     </div>
   );

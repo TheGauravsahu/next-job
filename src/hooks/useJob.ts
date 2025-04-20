@@ -1,11 +1,17 @@
-import { createJob, getAllJobs, getJobById } from "@/services/job.service";
+import {
+  createJob,
+  editJob,
+  getAllJobs,
+  getJobById,
+} from "@/services/job.service";
 import { APIError } from "@/types/auth.types";
 import {
   CreateJobFormValues,
+  EditJobFormValues,
   JobDetailsType,
   JobSummaryType,
 } from "@/types/job.types";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 
@@ -44,5 +50,25 @@ export const useJobDetails = (id: string) => {
     queryFn: () => getJobById(id),
     staleTime: 1000 * 60 * 5,
     retry: 1,
+  });
+};
+
+export const useEditJob = (jobId: string) => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: (jobData: EditJobFormValues) => editJob(jobData, jobId),
+    onSuccess: (data: { message: string }) => {
+      // console.log(data);
+      toast.success(data.message);
+
+      queryClient.invalidateQueries({ queryKey: ["jobs", jobId] });
+      router.push("/jobs/" + jobId);
+    },
+    onError: (error: APIError) => {
+      console.log(error);
+      toast.error(error.response?.data?.errorMessage || "Failed to edit job.");
+    },
   });
 };

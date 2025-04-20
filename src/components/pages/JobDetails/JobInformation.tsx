@@ -1,4 +1,5 @@
 import { MapPin, Briefcase, Building2 } from "lucide-react";
+import React from "react";
 
 interface JobInformationProps {
   workplaceType: string;
@@ -12,31 +13,43 @@ export default function JobInformation({
   employmentType,
 }: JobInformationProps) {
   return (
-    <div className="md:w-[40%] w-full mt-2 p-4">
+    <div className="md:w-[28rem] w-full mt-2">
       <h2>Job Information & Benefits</h2>
 
-      <div className="shadow-sm p-4 mt-2 border rounded-lg">
+      <div className="shadow-sm p-4 mt-2 border rounded-lg bg-gradient-to-r from-blue-400/5 to-blue-800/5 ">
         <h3 className="font-semibold">Job Type</h3>
         <div className="flex items-center flex-wrap gap-2 mt-2">
           {/* Workplace Type */}
-          <div className="border flex gap-2 items-center text-muted-foreground py-2 px-4 rounded-lg">
-            <Building2 className="h-4 w-4" />
-            <span className="text-sm">{workplaceType.replace(/_/g, " ")}</span>
-          </div>
+          <Badge>
+            <>
+              <Building2 className="h-4 w-4" />
+              <span className="text-sm">
+                {workplaceType.replace(/_/g, " ")}
+              </span>
+            </>
+          </Badge>
 
           {/* Employment Type */}
-          <div className="border flex gap-2 items-center text-muted-foreground py-2 px-4 rounded-lg">
+          <Badge>
             <Briefcase className="h-4 w-4" />
             <span className="text-sm">{employmentType.replace(/_/g, " ")}</span>
-          </div>
+          </Badge>
 
           {/* Company Location */}
-          <div className="border flex gap-2 items-center text-muted-foreground py-2 px-4 rounded-lg">
+          <Badge>
             <MapPin className="h-4 w-4" />
             <span className="text-sm">{companyLocation}</span>
-          </div>
+          </Badge>
         </div>
       </div>
+    </div>
+  );
+}
+
+export function Badge({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="border  cursor-pointer bg-blue-400/5 hover:border-blue-900  flex gap-2 items-center text-muted-foreground py-2 px-4 rounded-lg">
+      {children}
     </div>
   );
 }

@@ -16,7 +16,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import LoadingButton from "../general/loading-button";
 import PasswordInput from "../ui/password-input";
 import { useLogin } from "@/hooks/useAuth";
-import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   email: z
@@ -35,8 +34,7 @@ interface LoginFormProps {
 }
 
 export default function LoginForm({ redirectTo }: LoginFormProps) {
-  const router = useRouter();
-  const { mutate: login, isPending } = useLogin();
+  const { mutate: login, isPending } = useLogin(redirectTo);
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(formSchema),
@@ -48,8 +46,6 @@ export default function LoginForm({ redirectTo }: LoginFormProps) {
 
   function onSubmit(values: LoginFormValues) {
     login(values);
-    // console.log(redirectTo, "REDIRECT_URL");
-    router.push(redirectTo || "/");
   }
 
   return (

@@ -17,6 +17,7 @@ export default function JobCard({ job }: { job: JobSummaryType }) {
             <Button variant="outline" className="rounded-full text-xs">
               {formatDate(job.postedAt)}
             </Button>
+
             <Button variant="outline" className="rounded-full">
               <Bookmark size={16} />
             </Button>

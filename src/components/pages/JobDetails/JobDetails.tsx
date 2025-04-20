@@ -2,13 +2,18 @@
 
 import { useJobDetails } from "@/hooks/useJob";
 import JobDetailsBreadcrumb from "./JobDetailsBreadcrumb";
-import { Loader2 } from "lucide-react";
-import JobInformation from "./JobInformation";
+import { Loader2, Pencil } from "lucide-react";
+import JobInformation, { Badge } from "./JobInformation";
+import { formatSalary } from "@/lib/utils";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { useAuthStore } from "@/store/auth";
 
 interface JobDetailsProps {
   id: string;
 }
 export default function JobDetails({ id }: JobDetailsProps) {
+  const { user } = useAuthStore();
   const { data: job, isPending, error } = useJobDetails(id);
 
   if (isPending)
@@ -28,28 +33,55 @@ export default function JobDetails({ id }: JobDetailsProps) {
       </div>
 
       {/* Top */}
-      <div className="flex gap-4 p-4 md:mt-2 mt-4">
-        <div className="bg-white dark:bg-white/95 shadow-md rounded-lg w-32 h-32">
-          <img alt={job.companyName} src="/company/amazon.png" />
-        </div>
-        <div>
-          <h1>{job.title}</h1>
-          <h2 className="text-foreground/90">{job.companyName}</h2>
+      <div className="flex flex-col md:flex-row md:items-center justify-between">
+        <div className="w-full flex gap-4 p-4 md:mt-2 mt-8">
+          <div className="bg-white dark:bg-white/95 shadow-md rounded-lg w-32 h-32">
+            <img alt={job.companyName} src="/company/amazon.png" />
+          </div>
+          <div>
+            <div className="w-full flex items-center justify-between gap-2">
+              <h1 className="text-lg font-semibold">{job.title}</h1>
+              {user?.role === "EMPLOYER" &&
+                user.email === job.postedByEmail && (
+                  <Link href={"/jobs/" + job.id + "/edit"}>
+                    <Button variant="ghost" className="text-muted-foreground">
+                      <Pencil size={12} />
+                    </Button>
+                  </Link>
+                )}
+            </div>
+            <h2 className="text-muted-foreground">{job.companyName}</h2>
+            <h3 className="tex-sm text-forground/85">
+              {formatSalary(job.salary, job.salaryFrequency)}
+            </h3>
 
-          <div className="mt-2">
-            <p className="text-xs text-muted-foreground">Posted By</p>
-            <p className="text-sm">{job.employerName}</p>
+            <div className="mt-2">
+              <p className="text-xs text-muted-foreground">Posted By</p>
+              <p className="text-sm">{job.employerName}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Skills */}
+        <div className="md:w-[28rem] w-full mt-4  p-4 border rounded-lg h-fit bg-gradient-to-r from-blue-500/5 to-blue-800/5 ">
+          <h3 className="font-semibold">Skills</h3>
+          <div className="flex items-center flex-wrap gap-2 mt-2">
+            {job.skills.map((skill, index) => (
+              <Badge key={skill + "-" + index}>
+                <span className="text-sm">{skill}</span>
+              </Badge>
+            ))}
           </div>
         </div>
       </div>
 
       {/* Middle */}
-      <div className="w-full flex flex-col md:flex-row  items-start justify-between gap-4">
+      <div className="w-full flex flex-col md:flex-row  items-start justify-between gap-4 mt-4">
         {/* Description */}
-        <div className="w-full mt-2 p-4 wf-full">
+        <div className="w-full mt-2 md:p-4 wf-full">
           <h2>Job Description</h2>
 
-          <div className="shadow-sm p-4 mt-2 border rounded-lg">
+          <div className="shadow-sm p-4 mt-2 border rounded-lg bg-gradient-to-r from-blue-400/5 to-blue-800/5">
             <p>{job.description}</p>
           </div>
         </div>

@@ -31,7 +31,10 @@ export default async function CreateJobPage() {
                 </span>
               </h1>
             </CardTitle>
-            <CardDescription>This job will be listed publicly.</CardDescription>
+            <CardDescription>
+              Let&apos;s get the word out! Add a new job listing to connect with
+              talented professionals.
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <CreateJobForm />

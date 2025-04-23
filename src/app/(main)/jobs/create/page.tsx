@@ -20,7 +20,7 @@ export default async function CreateJobPage() {
     <div className="h-full w-full">
       <CreateJobBreadCrumb />
       <div className="h-full w-full flex  items-center justify-center">
-        <Card className="w-full md:w-[60%]  md:p-4 py-8">
+        <Card className="w-full md:w-[60%]   md:p-4 py-8">
           <CardHeader>
             <CardTitle className="flex items-center gap-1">
               <h1 className="text-2xl font-bold">

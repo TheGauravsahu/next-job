@@ -1,13 +1,15 @@
-import { MapPin, Briefcase, Building2 } from "lucide-react";
+import { MapPin, Briefcase, Building2, FolderKanban } from "lucide-react";
 import React from "react";
 
 interface JobInformationProps {
+  category: string;
   workplaceType: string;
   employmentType: string;
   companyLocation: string;
 }
 
 export default function JobInformation({
+  category,
   companyLocation,
   workplaceType,
   employmentType,
@@ -19,6 +21,14 @@ export default function JobInformation({
       <div className="shadow-sm p-4 mt-2 border rounded-lg bg-gradient-to-r from-blue-400/5 to-blue-800/5 ">
         <h3 className="font-semibold">Job Type</h3>
         <div className="flex items-center flex-wrap gap-2 mt-2">
+          {/* Category*/}
+          <Badge>
+            <>
+              <FolderKanban className="h-4 w-4" />
+              <span className="text-sm">{category}</span>
+            </>
+          </Badge>
+
           {/* Workplace Type */}
           <Badge>
             <>

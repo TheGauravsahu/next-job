@@ -8,6 +8,7 @@ import { formatSalary } from "@/lib/utils";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/store/auth";
+import DeleteJobDialog from "./DeleteJobDialog";
 
 interface JobDetailsProps {
   id: string;
@@ -35,19 +36,23 @@ export default function JobDetails({ id }: JobDetailsProps) {
       {/* Top */}
       <div className="flex flex-col md:flex-row md:items-center justify-between">
         <div className="w-full flex gap-4 p-4 md:mt-2 mt-8">
-          <div className="bg-white dark:bg-white/95 shadow-md rounded-lg w-32 h-32">
-            <img alt={job.companyName} src="/company/amazon.png" />
+          <div className="bg-white flex items-center justify-center dark:bg-white/95 shadow-md rounded-lg w-32 h-32">
+            <img alt={job.companyName} src={job.companyLogo} className="object-cover" />
           </div>
           <div>
             <div className="w-full flex items-center justify-between gap-2">
               <h1 className="text-lg font-semibold">{job.title}</h1>
               {user?.role === "EMPLOYER" &&
                 user.email === job.postedByEmail && (
-                  <Link href={"/jobs/" + job.id + "/edit"}>
-                    <Button variant="ghost" className="text-muted-foreground">
-                      <Pencil size={12} />
-                    </Button>
-                  </Link>
+                  <div className="flex items-center gap-1">
+                    <Link href={"/jobs/" + job.id + "/edit"}>
+                      <Button variant="ghost" className="text-muted-foreground">
+                        <Pencil size={12} />
+                      </Button>
+                    </Link>
+
+                    <DeleteJobDialog jobId={id} />
+                  </div>
                 )}
             </div>
             <h2 className="text-muted-foreground">{job.companyName}</h2>
@@ -88,6 +93,7 @@ export default function JobDetails({ id }: JobDetailsProps) {
 
         {/* Information */}
         <JobInformation
+          category={job.category}
           companyLocation={job.companyLocation}
           workplaceType={job.workplaceType}
           employmentType={job.employmentType}

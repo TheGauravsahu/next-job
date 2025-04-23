@@ -49,7 +49,7 @@ export const useLogin = (redirectTo: string) => {
       setToken(data.token);
       setUser(data.user);
 
-      router.push(redirectTo);
+      router.push(redirectTo || "/");
     },
     onError: (error: APIError) => {
       console.log(error);

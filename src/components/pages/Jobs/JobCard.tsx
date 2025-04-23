@@ -3,7 +3,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { formatDate, formatSalary } from "@/lib/utils";
 import { JobSummaryType } from "@/types/job.types";
 import { Bookmark } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
@@ -31,13 +30,13 @@ export default function JobCard({ job }: { job: JobSummaryType }) {
               </div>
             </div>
 
-            <div className="bg-white rounded-full size-8 overflow-hidden cursor-pointer">
-              <Image
-                src="/company/amazon.png"
+            <div className="bg-white rounded-full flex items-center justify-center size-8 overflow-hidden cursor-pointer">
+              <img
+                src={job.companyLogo}
                 alt="amazon"
                 width={200}
                 height={200}
-                className="size-8"
+                className="size-8 object-cover"
               />
             </div>
           </div>

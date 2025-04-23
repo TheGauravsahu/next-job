@@ -93,7 +93,7 @@ export default function CreateJobForm() {
           name="salary"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Salary</FormLabel>
+              <FormLabel>Salary (no comma) </FormLabel>
               <FormControl>
                 <Input placeholder="50000" {...field} />
               </FormControl>

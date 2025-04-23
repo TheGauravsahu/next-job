@@ -1,5 +1,6 @@
 import {
   createJob,
+  deleteJob,
   editJob,
   getAllJobs,
   getJobById,
@@ -26,13 +27,15 @@ export const useJobList = () => {
 
 export const useCreateJob = () => {
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (data: CreateJobFormValues) => createJob(data),
     onSuccess: (data: { message: string }) => {
-      console.log(data);
+      // console.log(data);
 
       toast.success(data.message);
+      queryClient.invalidateQueries({ queryKey: ["jobs"] });
       router.push("/jobs");
     },
     onError: (error: APIError) => {
@@ -69,6 +72,28 @@ export const useEditJob = (jobId: string) => {
     onError: (error: APIError) => {
       console.log(error);
       toast.error(error.response?.data?.errorMessage || "Failed to edit job.");
+    },
+  });
+};
+
+export const useDeleteJob = (jobId: string) => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => deleteJob(jobId),
+    onSuccess: (data: { message: string }) => {
+      // console.log(data);
+      toast.success(data.message);
+      queryClient.invalidateQueries({ queryKey: ["jobs"] });
+
+      router.push("/jobs");
+    },
+    onError: (error: APIError) => {
+      console.log(error);
+      toast.error(
+        error.response?.data?.errorMessage || "Failed to delete job."
+      );
     },
   });
 };

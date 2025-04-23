@@ -31,8 +31,10 @@ export default function MobileMenu() {
 
       {isMenuOpen && (
         <div
-          className={`absolute top-17 left-4 right-4  w-[90%] bg-black shadow-md border rounded-lg p-8 flex flex-col gap-2 z-50 transition duration-200 ${
-            isMenuOpen ? "h-[15rem]" : "h-0"
+          className={`absolute top-17 left-4 right-4  w-[90%] bg-white dark:bg-black shadow-md border rounded-lg p-8 flex flex-col gap-2 z-50  transition-all duration-300 ease-in-out transform ${
+            isMenuOpen
+              ? "opacity-100 scale-100 pointer-events-auto"
+              : "opacity-0 scale-95 pointer-events-none"
           }`}
         >
           <Link onClick={toggleMenuBar} href="/" className="hover:underline">
@@ -47,17 +49,17 @@ export default function MobileMenu() {
           </Link>
           <Link
             onClick={toggleMenuBar}
-            href="/about"
+            href="/how-it-works"
             className="hover:underline"
           >
-            About
+            How it works
           </Link>
           <Link
             onClick={toggleMenuBar}
-            href="/contact"
+            href="/employer"
             className="hover:underline"
           >
-            Contact
+            For employers
           </Link>
           <span onClick={toggleTheme}>Switch Theme</span>
         </div>

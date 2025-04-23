@@ -25,9 +25,8 @@ export default function Header() {
 
       <nav className="hidden md:flex gap-4 items-center justify-center">
         <Link href="/jobs">Find a Job</Link>
-        <Link href="/">Companies</Link>
-        <Link href="/">How it works</Link>
-        <Link href="/">Contact</Link>
+        <Link href="/employer">For Employers</Link>
+        <Link href="/how-it-works">How it works</Link>
       </nav>
 
       <div className="flex items-center gap-1">

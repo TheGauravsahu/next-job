@@ -30,3 +30,7 @@ export const editJob = async (data: EditJobFormValues, jobId: string) => {
 export const getJobById = async (id: string) => {
   return (await api.get("/jobs/" + id)).data;
 };
+
+export const deleteJob = async (id: string) => {
+  return (await api.delete("/jobs/" + id)).data;
+};

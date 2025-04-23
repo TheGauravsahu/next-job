@@ -83,6 +83,7 @@ export default function EditJobForm({ jobId }: { jobId: string }) {
   function onSubmit(values: EditJobFormValues) {
     // console.log(values);
     editJobMutation.mutate(values);
+    form.reset();
   }
 
   if (isPending)
@@ -131,7 +132,7 @@ export default function EditJobForm({ jobId }: { jobId: string }) {
           name="salary"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Salary</FormLabel>
+              <FormLabel>Salary (no comma) </FormLabel>
               <FormControl>
                 <Input placeholder="50000" {...field} />
               </FormControl>
@@ -291,9 +292,9 @@ export default function EditJobForm({ jobId }: { jobId: string }) {
 
         <LoadingButton
           isLoading={editJobMutation.isPending}
-          loadingText="Editing Job"
+          loadingText="Saving Changes"
         >
-          Edit Job
+          Save Changes
         </LoadingButton>
       </form>
     </Form>

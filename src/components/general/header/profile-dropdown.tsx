@@ -40,10 +40,12 @@ export default function ProfileDropdown() {
           <DropdownMenuContent className="*:cursor-pointer">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <User />
-              Profile
-            </DropdownMenuItem>
+            <Link href="/profile">
+              <DropdownMenuItem>
+                <User />
+                Profile
+              </DropdownMenuItem>
+            </Link>
             <DropdownMenuItem onClick={() => logout()}>
               <LogOut /> Logout
             </DropdownMenuItem>

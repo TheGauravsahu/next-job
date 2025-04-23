@@ -36,8 +36,12 @@ export default function JobDetails({ id }: JobDetailsProps) {
       {/* Top */}
       <div className="flex flex-col md:flex-row md:items-center justify-between">
         <div className="w-full flex gap-4 p-4 md:mt-2 mt-8">
-          <div className="bg-white flex items-center justify-center dark:bg-white/95 shadow-md rounded-lg w-32 h-32">
-            <img alt={job.companyName} src={job.companyLogo} className="object-cover" />
+          <div className="bg-white flex items-center justify-center dark:bg-white/95 p-2 shadow-md rounded-lg w-32 h-32">
+            <img
+              alt={job.companyName}
+              src={job.companyLogo}
+              className="object-cover"
+            />
           </div>
           <div>
             <div className="w-full flex items-center justify-between gap-2">

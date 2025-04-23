@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Form,
   FormControl,
@@ -13,10 +13,9 @@ import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import LoadingButton from "../general/loading-button";
-import PasswordInput from "../ui/password-input";
-import { useRegister } from "@/hooks/useAuth";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Button } from "@/components/ui/button";
+import { useAuthStore } from "@/store/auth";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -24,36 +23,36 @@ const formSchema = z.object({
     .string()
     .email({ message: "Please enter a valid email address." })
     .min(5, { message: "Email must be at least 5 characters." }),
-  password: z
-    .string()
-    .min(6, { message: "Password must be at least 6 characters." }),
   role: z.enum(["APPLICANT", "EMPLOYER"], {
     required_error: "Please select a role.",
   }),
 });
 
-export type RegisterFormValues = z.infer<typeof formSchema>;
+export type EditFormValues = z.infer<typeof formSchema>;
 
-export default function RegisterForm() {
-  const { mutate: register, isPending } = useRegister();
+export default function EditProfileForm() {
+  const { user } = useAuthStore();
 
-  const form = useForm<RegisterFormValues>({
+  const form = useForm<EditFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       email: "",
-      password: "",
       role: "APPLICANT",
     },
   });
 
-  function onSubmit(values: RegisterFormValues) {
-    register(values);
-  }
+  useEffect(() => {
+    if (user) {
+      form.setValue("name", user.name);
+      form.setValue("email", user.email);
+      form.setValue("role", user.role as "APPLICANT" | "EMPLOYER");
+    }
+  }, [user, form]);
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <form className="space-y-4">
         <FormField
           control={form.control}
           name="name"
@@ -61,7 +60,7 @@ export default function RegisterForm() {
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input placeholder="John Doe" {...field} />
+                <Input placeholder="John Doe" {...field} disabled />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -75,23 +74,8 @@ export default function RegisterForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="john@example.com" {...field} />
+                <Input placeholder="john@example.com" {...field} disabled />
               </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Password</FormLabel>
-              <FormControl>
-                <PasswordInput placeholder="password" {...field} />
-              </FormControl>
-
               <FormMessage />
             </FormItem>
           )}
@@ -102,22 +86,22 @@ export default function RegisterForm() {
           name="role"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Register As</FormLabel>
+              <FormLabel>Role</FormLabel>
               <FormControl>
                 <RadioGroup
                   onValueChange={field.onChange}
-                  defaultValue={field.value}
+                  value={field.value}
                   className="flex gap-4"
                 >
                   <FormItem className="flex items-center">
                     <FormControl>
-                      <RadioGroupItem value="APPLICANT" />
+                      <RadioGroupItem value="APPLICANT" disabled />
                     </FormControl>
                     <FormLabel className="font-normal">Applicant</FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center">
                     <FormControl>
-                      <RadioGroupItem value="EMPLOYER" />
+                      <RadioGroupItem value="EMPLOYER" disabled />
                     </FormControl>
                     <FormLabel className="font-normal">Employer</FormLabel>
                   </FormItem>
@@ -128,9 +112,9 @@ export default function RegisterForm() {
           )}
         />
 
-        <LoadingButton loadingText="Registering" isLoading={isPending}>
-          Register
-        </LoadingButton>
+        <Button disabled variant="gradient" className="w-full my-2">
+          Save changes
+        </Button>
       </form>
     </Form>
   );

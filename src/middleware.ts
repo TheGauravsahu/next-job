@@ -1,6 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const PUBLIC_ROUTES = ["/", "/login", "/register", "/verify-email", "/jobs"];
+const PUBLIC_ROUTES = [
+  "/",
+  "/login",
+  "/register",
+  "/verify-email",
+  "/jobs",
+  "/employer",
+  "/how-it-works",
+];
 
 export async function middleware(request: NextRequest) {
   const token = request.cookies.get("token")?.value;

@@ -4,7 +4,6 @@ import {
   loginUser,
   logoutUser,
   registerUser,
-  sendOtp,
   verifyOtp,
 } from "@/services/auth.service";
 import { useAuthStore } from "@/store/auth";
@@ -19,19 +18,17 @@ export const useRegister = () => {
 
   return useMutation({
     mutationFn: (data: RegisterFormValues) => registerUser(data),
-    onSuccess: (data) => {
+    onSuccess: ({ data }) => {
       toast.success("Account created successfully.");
 
-      // console.log(data);
+      console.log(data);
       setUser(data);
 
       router.push("/verify-email");
     },
     onError: (error: APIError) => {
       console.log(error);
-      toast.error(
-        error?.response?.data?.errorMessage || "Something went wrong."
-      );
+      toast.error(error?.response?.data?.message || "Something went wrong.");
     },
   });
 };
@@ -42,7 +39,7 @@ export const useLogin = (redirectTo: string) => {
 
   return useMutation({
     mutationFn: (data: LoginFormValues) => loginUser(data),
-    onSuccess: async (data) => {
+    onSuccess: async ({ data }) => {
       toast.success("Logged in successfully.");
 
       // console.log(data);
@@ -53,25 +50,7 @@ export const useLogin = (redirectTo: string) => {
     },
     onError: (error: APIError) => {
       console.log(error);
-      toast.error(
-        error?.response?.data?.errorMessage || "Something went wrong."
-      );
-    },
-  });
-};
-
-export const useSendOtp = () => {
-  return useMutation({
-    mutationFn: (email: string) => sendOtp(email),
-    onSuccess: (data) => {
-      toast.success(data.message);
-      console.log(data);
-    },
-    onError: (error: APIError) => {
-      console.log(error);
-      toast.error(
-        error?.response?.data?.errorMessage || "Something went wrong."
-      );
+      toast.error(error?.response?.data?.message || "Something went wrong.");
     },
   });
 };
@@ -87,9 +66,7 @@ export const useVerifyOtp = () => {
     },
     onError: (error: APIError) => {
       console.log(error);
-      toast.error(
-        error?.response?.data?.errorMessage || "Something went wrong."
-      );
+      toast.error(error?.response?.data?.message || "Something went wrong.");
     },
   });
 };
@@ -107,9 +84,7 @@ export const useLogout = () => {
     },
     onError: (error: APIError) => {
       console.log(error);
-      toast.error(
-        error?.response?.data?.errorMessage || "Something went wrong."
-      );
+      toast.error(error?.response?.data?.message || "Something went wrong.");
     },
   });
 };

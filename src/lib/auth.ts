@@ -14,7 +14,7 @@ export async function auth(): Promise<AuthResponse> {
   if (!token) return { user: null };
 
   try {
-    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/users/me`, {
+    const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/auth/me`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

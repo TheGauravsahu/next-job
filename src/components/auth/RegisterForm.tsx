@@ -27,7 +27,7 @@ const formSchema = z.object({
   password: z
     .string()
     .min(6, { message: "Password must be at least 6 characters." }),
-  role: z.enum(["APPLICANT", "EMPLOYER"], {
+  role: z.enum(["USER", "EMPLOYER"], {
     required_error: "Please select a role.",
   }),
 });
@@ -43,7 +43,7 @@ export default function RegisterForm() {
       name: "",
       email: "",
       password: "",
-      role: "APPLICANT",
+      role: "USER",
     },
   });
 
@@ -111,9 +111,9 @@ export default function RegisterForm() {
                 >
                   <FormItem className="flex items-center">
                     <FormControl>
-                      <RadioGroupItem value="APPLICANT" />
+                      <RadioGroupItem value="USER" />
                     </FormControl>
-                    <FormLabel className="font-normal">Applicant</FormLabel>
+                    <FormLabel className="font-normal">User</FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center">
                     <FormControl>

@@ -18,7 +18,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { useSendOtp, useVerifyOtp } from "@/hooks/useAuth";
+import { useVerifyOtp } from "@/hooks/useAuth";
 import { useAuthStore } from "@/store/auth";
 import { REGEXP_ONLY_DIGITS } from "input-otp";
 import {
@@ -26,7 +26,6 @@ import {
   InputOTPGroup,
   InputOTPSlot,
 } from "@/components/ui/input-otp";
-import { useEffect } from "react";
 import LoadingButton from "../general/loading-button";
 
 const formSchema = z.object({
@@ -39,17 +38,7 @@ export type OtpFormValues = z.infer<typeof formSchema>;
 
 export default function OtpForm() {
   const { user } = useAuthStore();
-  const sendOtpMutation = useSendOtp();
   const verifyOtpMutation = useVerifyOtp();
-
-
-  useEffect(() => {
-    if (user?.email) {
-      sendOtpMutation.mutate(user.email);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  
 
   const form = useForm<OtpFormValues>({
     resolver: zodResolver(formSchema),
@@ -63,11 +52,7 @@ export default function OtpForm() {
   }
 
   return (
-    <Card
-      className={`md:w-[35vw] w-[90%] md:p-4 py-8 transition-all duration-300 ${
-        sendOtpMutation.isPending ? "5vh" : "45vh"
-      }`}
-    >
+    <Card className="md:w-[35vw] w-[90%] md:p-4 py-8 transition-all duration-300 45vh">
       <CardHeader>
         <CardTitle>
           <h1 className="text-center md:text-3xl text-xl font-bold">
@@ -83,58 +68,49 @@ export default function OtpForm() {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {sendOtpMutation.isPending ? (
-          <p className="text-center  py-2 cursor-pointer">
-            Sending OTP to your email...{" "}
-            <span className="text-muted-foreground ml-1">
-              Don&apos;t refresh the page.
-            </span>
-          </p>
-        ) : (
-          <div className="flex items-center justify-center">
-            <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(onSubmit)}
-                className="w-2/3 space-y-6"
+        <div className="flex items-center justify-center">
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(onSubmit)}
+              className="w-2/3 space-y-6"
+            >
+              <FormField
+                control={form.control}
+                name="pin"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>OTP</FormLabel>
+                    <FormControl>
+                      <InputOTP
+                        maxLength={6}
+                        {...field}
+                        pattern={REGEXP_ONLY_DIGITS}
+                      >
+                        <InputOTPGroup>
+                          <InputOTPSlot index={0} />
+                          <InputOTPSlot index={1} />
+                          <InputOTPSlot index={2} />
+                          <InputOTPSlot index={3} />
+                          <InputOTPSlot index={4} />
+                          <InputOTPSlot index={5} />
+                        </InputOTPGroup>
+                      </InputOTP>
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <LoadingButton
+                isLoading={verifyOtpMutation.isPending}
+                loadingText="Verifying"
               >
-                <FormField
-                  control={form.control}
-                  name="pin"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>OTP</FormLabel>
-                      <FormControl>
-                        <InputOTP
-                          maxLength={6}
-                          {...field}
-                          pattern={REGEXP_ONLY_DIGITS}
-                        >
-                          <InputOTPGroup>
-                            <InputOTPSlot index={0} />
-                            <InputOTPSlot index={1} />
-                            <InputOTPSlot index={2} />
-                            <InputOTPSlot index={3} />
-                            <InputOTPSlot index={4} />
-                            <InputOTPSlot index={5} />
-                          </InputOTPGroup>
-                        </InputOTP>
-                      </FormControl>
-
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <LoadingButton
-                  isLoading={verifyOtpMutation.isPending}
-                  loadingText="Verifying"
-                >
-                  Verify
-                </LoadingButton>
-              </form>
-            </Form>
-          </div>
-        )}
+                Verify
+              </LoadingButton>
+            </form>
+          </Form>
+        </div>
       </CardContent>
     </Card>
   );

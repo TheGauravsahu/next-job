@@ -1,5 +1,6 @@
 import { LoginFormValues } from "@/components/auth/LoginForm";
 import { RegisterFormValues } from "@/components/auth/RegisterForm";
+import { EditProfileFormValues } from "@/components/pages/Profile/EditProfileForm";
 import api from "@/lib/axios";
 
 export const registerUser = async (data: RegisterFormValues) => {
@@ -28,5 +29,10 @@ export const verifyOtp = async ({
 
 export const logoutUser = async () => {
   const response = await api.post("/auth/logout");
+  return response.data;
+};
+
+export const updateProfile = async (data: EditProfileFormValues) => {
+  const response = await api.put("/auth/me", data);
   return response.data;
 };

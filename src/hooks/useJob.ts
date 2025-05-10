@@ -40,9 +40,14 @@ export const useCreateJob = () => {
     },
     onError: (error: APIError) => {
       console.log(error);
-      toast.error(
-        error.response?.data?.errorMessage || "Failed to create job."
-      );
+
+      if (error.response?.data?.message === "Validation Error") {
+        error.response.data.errors?.map((err) => {
+          toast.error(err.message);
+        });
+      } else {
+        toast.error(error.response?.data?.message || "Failed to create job.");
+      }
     },
   });
 };
@@ -71,7 +76,14 @@ export const useEditJob = (jobId: string) => {
     },
     onError: (error: APIError) => {
       console.log(error);
-      toast.error(error.response?.data?.errorMessage || "Failed to edit job.");
+
+      if (error.response?.data?.message === "Validation Error") {
+        error.response.data.errors?.map((err) => {
+          toast.error(err.message);
+        });
+      } else {
+        toast.error(error.response?.data?.message || "Failed to create job.");
+      }
     },
   });
 };
@@ -91,9 +103,7 @@ export const useDeleteJob = (jobId: string) => {
     },
     onError: (error: APIError) => {
       console.log(error);
-      toast.error(
-        error.response?.data?.errorMessage || "Failed to delete job."
-      );
+      toast.error(error.response?.data?.message || "Failed to delete job.");
     },
   });
 };

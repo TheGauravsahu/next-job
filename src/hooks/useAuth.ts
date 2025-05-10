@@ -4,6 +4,7 @@ import {
   loginUser,
   logoutUser,
   registerUser,
+  updateProfile,
   verifyOtp,
 } from "@/services/auth.service";
 import { useAuthStore } from "@/store/auth";
@@ -11,6 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { APIError } from "@/types/auth.types";
+import { EditProfileFormValues } from "@/components/pages/Profile/EditProfileForm";
 
 export const useRegister = () => {
   const router = useRouter();
@@ -81,6 +83,24 @@ export const useLogout = () => {
       logout();
       router.refresh();
       toast.success(data.message);
+    },
+    onError: (error: APIError) => {
+      console.log(error);
+      toast.error(error?.response?.data?.message || "Something went wrong.");
+    },
+  });
+};
+
+export const useUpdateProfile = () => {
+  const { setUser } = useAuthStore();
+  const router = useRouter();
+
+  return useMutation({
+    mutationFn: (data: EditProfileFormValues) => updateProfile(data),
+    onSuccess: async ({ data }) => {
+      toast.success("Profile updated successfully.");
+      setUser(data.user);
+      router.push("/")
     },
     onError: (error: APIError) => {
       console.log(error);

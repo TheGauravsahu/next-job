@@ -20,7 +20,7 @@ export async function auth(): Promise<AuthResponse> {
       },
     });
 
-    return { user: res.data };
+    return { user: res.data.data.user };
   } catch (err) {
     console.log(err);
     return { user: null };

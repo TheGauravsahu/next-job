@@ -34,7 +34,8 @@ export default function JobInformation({
             <>
               <Building2 className="h-4 w-4" />
               <span className="text-sm">
-                {workplaceType.replace(/_/g, " ")}
+                {workplaceType.charAt(0) +
+                  workplaceType.slice(1).toLowerCase().replace(/_/g, " ")}
               </span>
             </>
           </Badge>
@@ -42,7 +43,10 @@ export default function JobInformation({
           {/* Employment Type */}
           <Badge>
             <Briefcase className="h-4 w-4" />
-            <span className="text-sm">{employmentType.replace(/_/g, " ")}</span>
+            <span className="text-sm">
+              {employmentType.charAt(0) +
+                employmentType.slice(1).toLowerCase().replace(/_/g, " ")}
+            </span>
           </Badge>
 
           {/* Company Location */}

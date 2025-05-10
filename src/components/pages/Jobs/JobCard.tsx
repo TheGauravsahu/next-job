@@ -14,7 +14,7 @@ export default function JobCard({ job }: { job: JobSummaryType }) {
           {/* header */}
           <div className="w-full flex justify-between items-center">
             <Button variant="outline" className="rounded-full text-xs">
-              {formatDate(job.postedAt)}
+              {formatDate(job.createdAt)}
             </Button>
 
             <Button variant="outline" className="rounded-full">
@@ -24,7 +24,7 @@ export default function JobCard({ job }: { job: JobSummaryType }) {
 
           <div className="w-full flex items-center justify-between mt-2">
             <div className="w- py-4">
-              <h3>{job.companyName}</h3>
+              <h3>{job.company.name}</h3>
               <div>
                 <h1 className="text-xl font-bold">{job.title}</h1>
               </div>
@@ -32,7 +32,7 @@ export default function JobCard({ job }: { job: JobSummaryType }) {
 
             <div className="bg-white rounded-full flex items-center justify-center size-8 overflow-hidden cursor-pointer">
               <img
-                src={job.companyLogo}
+                src={job.company.logo}
                 alt="amazon"
                 width={200}
                 height={200}
@@ -43,10 +43,12 @@ export default function JobCard({ job }: { job: JobSummaryType }) {
 
           <div className="w-full flex flex-wrap items-center gap-2 py-1">
             <Button variant="outline" className="rounded-full">
-              {job.employmentType.replace(/_/g, " ")}
+              {job.employmentType.charAt(0).toUpperCase() +
+                job.employmentType.slice(1).toLowerCase().replace(/_/g, " ")}
             </Button>
             <Button variant="outline" className="rounded-full">
-              {job.workplaceType.replace(/_/g, " ")}
+              {job.workplaceType.charAt(0) +
+                job.workplaceType.slice(1).toLowerCase().replace(/_/g, " ")}
             </Button>
 
             {/* skills */}
@@ -61,10 +63,10 @@ export default function JobCard({ job }: { job: JobSummaryType }) {
         {/* footer */}
         <div className="w-full flex items-center justify-betweeen">
           <div className="w-full">
-            <h2>{formatSalary(job.salary, job.salaryFrequency)}</h2>
-            <p className="text-muted-foreground">{job.companyLocation}</p>
+            <h2>{formatSalary(job.salary.amount, job.salary.frequency)}</h2>
+            <p className="text-muted-foreground">{job.company.location}</p>
           </div>
-          <Link href={"/jobs/" + job.id}>
+          <Link href={"/jobs/" + job._id}>
             <Button variant="outline" className="rounded-full">
               Details
             </Button>

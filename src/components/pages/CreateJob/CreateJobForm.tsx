@@ -38,15 +38,19 @@ export default function CreateJobForm() {
     defaultValues: {
       title: "",
       description: "",
-      salary: "",
-      salaryFrequency: "MONTHLY",
+      salary: {
+        amount: "",
+        frequency: "MONTHLY",
+      },
       skills: [],
       category: "",
-      companyLogo: "",
-      companyName: "",
-      companyLocation: "",
-      employmentType: "Full_time",
-      workplaceType: "Remote",
+      company: {
+        name: "",
+        location: "",
+        logo: "",
+      },
+      employmentType: "FULL_TIME",
+      workplaceType: "REMOTE",
     },
   });
 
@@ -90,12 +94,12 @@ export default function CreateJobForm() {
 
         <FormField
           control={form.control}
-          name="salary"
+          name="salary.amount"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Salary (no comma) </FormLabel>
               <FormControl>
-                <Input placeholder="50000" {...field} />
+                <Input  placeholder="50000" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -104,7 +108,7 @@ export default function CreateJobForm() {
 
         <FormField
           control={form.control}
-          name="salaryFrequency"
+          name="salary.frequency"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Salary Frequency</FormLabel>
@@ -116,7 +120,7 @@ export default function CreateJobForm() {
                 </FormControl>
                 <SelectContent>
                   <SelectItem value="MONTHLY">Monthly</SelectItem>
-                  <SelectItem value="ANNUALLY">Annually</SelectItem>
+                  <SelectItem value="YEARLY">Yearly</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -151,7 +155,10 @@ export default function CreateJobForm() {
                   tags={tags}
                   setTags={(newTags) => {
                     setTags(newTags);
-                    setValue("skills", newTags as [Tag, ...Tag[]]);
+                    setValue(
+                      "skills",
+                      (newTags as Tag[]).map((tag: Tag) => tag.text)
+                    );
                   }}
                   activeTagIndex={activeTagIndex}
                   setActiveTagIndex={setActiveTagIndex}
@@ -164,7 +171,7 @@ export default function CreateJobForm() {
 
         <FormField
           control={form.control}
-          name="companyName"
+          name="company.name"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Company Name</FormLabel>
@@ -178,7 +185,7 @@ export default function CreateJobForm() {
 
         <FormField
           control={form.control}
-          name="companyLogo"
+          name="company.logo"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Company Logo URL</FormLabel>
@@ -192,7 +199,7 @@ export default function CreateJobForm() {
 
         <FormField
           control={form.control}
-          name="companyLocation"
+          name="company.location"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Company Location</FormLabel>
@@ -217,10 +224,11 @@ export default function CreateJobForm() {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="Full_time">Full-time</SelectItem>
-                  <SelectItem value="Part_time">Part-time</SelectItem>
-                  <SelectItem value="Internship">Internship</SelectItem>
-                  <SelectItem value="Contract">Contract</SelectItem>
+                  <SelectItem value="FULL_TIME">Full-time</SelectItem>
+                  <SelectItem value="PART_TIME">Part-time</SelectItem>
+                  <SelectItem value="INTERSHIP">Internship</SelectItem>
+                  <SelectItem value="CONTRACT">Contract</SelectItem>
+                  <SelectItem value="FREELANCE">Freelance</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -241,9 +249,9 @@ export default function CreateJobForm() {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="On_site">On-site</SelectItem>
-                  <SelectItem value="Remote">Remote</SelectItem>
-                  <SelectItem value="Hybrid">Hybrid</SelectItem>
+                  <SelectItem value="ONSITE">On-site</SelectItem>
+                  <SelectItem value="REMOTE">Remote</SelectItem>
+                  <SelectItem value="HYBRID">Hybrid</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />

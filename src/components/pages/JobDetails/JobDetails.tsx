@@ -17,6 +17,8 @@ export default function JobDetails({ id }: JobDetailsProps) {
   const { user } = useAuthStore();
   const { data: job, isPending, error } = useJobDetails(id);
 
+  // console.log(job);
+
   if (isPending)
     return (
       <div className="h-screen w-full flex items-center justify-center">
@@ -38,8 +40,8 @@ export default function JobDetails({ id }: JobDetailsProps) {
         <div className="w-full flex gap-4 p-4 md:mt-2 mt-8">
           <div className="bg-white flex items-center justify-center dark:bg-white/95 p-2 shadow-md rounded-lg w-32 h-32">
             <img
-              alt={job.companyName}
-              src={job.companyLogo}
+              alt={job.company.name}
+              src={job.company.logo}
               className="object-cover"
             />
           </div>
@@ -47,9 +49,9 @@ export default function JobDetails({ id }: JobDetailsProps) {
             <div className="w-full flex items-center justify-between gap-2">
               <h1 className="text-lg font-semibold">{job.title}</h1>
               {user?.role === "EMPLOYER" &&
-                user.email === job.postedByEmail && (
+                user.email === job.employer.email && (
                   <div className="flex items-center gap-1">
-                    <Link href={"/jobs/" + job.id + "/edit"}>
+                    <Link href={"/jobs/" + job._id + "/edit"}>
                       <Button variant="ghost" className="text-muted-foreground">
                         <Pencil size={12} />
                       </Button>
@@ -59,14 +61,14 @@ export default function JobDetails({ id }: JobDetailsProps) {
                   </div>
                 )}
             </div>
-            <h2 className="text-muted-foreground">{job.companyName}</h2>
+            <h2 className="text-muted-foreground">{job.company.name}</h2>
             <h3 className="tex-sm text-forground/85">
-              {formatSalary(job.salary, job.salaryFrequency)}
+              {formatSalary(job.salary.amount, job.salary.frequency)}
             </h3>
 
             <div className="mt-2">
               <p className="text-xs text-muted-foreground">Posted By</p>
-              <p className="text-sm">{job.employerName}</p>
+              <p className="text-sm">{job.employer.name}</p>
             </div>
           </div>
         </div>
@@ -98,7 +100,7 @@ export default function JobDetails({ id }: JobDetailsProps) {
         {/* Information */}
         <JobInformation
           category={job.category}
-          companyLocation={job.companyLocation}
+          companyLocation={job.company.location}
           workplaceType={job.workplaceType}
           employmentType={job.employmentType}
         />

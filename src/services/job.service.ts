@@ -2,25 +2,27 @@ import api from "@/lib/axios";
 import { CreateJobFormValues, EditJobFormValues } from "@/types/job.types";
 
 export const getAllJobs = async () => {
-  return (await api.get("/jobs")).data;
+  return (await api.get("/jobs")).data.data;
 };
 
 export const createJob = async (data: CreateJobFormValues) => {
   const job = {
     ...data,
-    salary: Number(data.salary),
-    skills: [...data.skills.map((skill) => skill.text)],
+    salary: {
+      amount: Number(data.salary.amount),
+      frequency: data.salary.frequency,
+    },
   };
-
-  // console.log("TRANSFORMED-JOB", job);
   return (await api.post("/jobs", job)).data;
 };
 
 export const editJob = async (data: EditJobFormValues, jobId: string) => {
   const job = {
     ...data,
-    salary: Number(data.salary),
-    skills: [...data.skills.map((skill) => skill.text)],
+    salary: {
+      amount: Number(data.salary.amount),
+      frequency: data.salary.frequency,
+    },
   };
 
   // console.log("TRANSFORMED-JOB", job);
@@ -28,7 +30,7 @@ export const editJob = async (data: EditJobFormValues, jobId: string) => {
 };
 
 export const getJobById = async (id: string) => {
-  return (await api.get("/jobs/" + id)).data;
+  return (await api.get("/jobs/" + id)).data.data;
 };
 
 export const deleteJob = async (id: string) => {

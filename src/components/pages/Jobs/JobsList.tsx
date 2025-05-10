@@ -15,7 +15,7 @@ export default function JobsList() {
   return (
     <div className="flex flex-wrap gap-5 justify-center md:justify-start items-start max-w-6xl w-full">
       {data.map((job) => (
-        <JobCard key={job.id} job={job} />
+        <JobCard key={job._id} job={job} />
       ))}
     </div>
   );

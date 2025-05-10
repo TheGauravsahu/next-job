@@ -40,15 +40,19 @@ export default function EditJobForm({ jobId }: { jobId: string }) {
     defaultValues: {
       title: job?.title,
       description: "",
-      salary: "",
-      salaryFrequency: "MONTHLY",
-      skills: [],
       category: "",
-      companyLogo: "",
-      companyName: "",
-      companyLocation: "",
-      employmentType: "Full_time",
-      workplaceType: "Remote",
+      employmentType: "FULL_TIME",
+      workplaceType: "REMOTE",
+      skills: [],
+      company: {
+        logo: "",
+        name: "",
+        location: "",
+      },
+      salary: {
+        amount: "",
+        frequency: "MONTHLY",
+      },
     },
   });
 
@@ -56,27 +60,30 @@ export default function EditJobForm({ jobId }: { jobId: string }) {
 
   useEffect(() => {
     if (job) {
-      // Convert string[] to Tag[]
-      const formattedTags = job.skills.map((skill: string) => ({
-        id: skill,
-        text: skill,
-      }));
-
       form.reset({
         title: job.title,
         description: job.description,
-        salary: job.salary.toString(),
-        salaryFrequency: job.salaryFrequency,
         category: job.category,
-        companyLogo: job.companyLogo,
-        companyName: job.companyName,
-        companyLocation: job.companyLocation,
         employmentType: job.employmentType,
         workplaceType: job.workplaceType,
-        skills: formattedTags,
+        skills: job.skills,
+        company: {
+          logo: job.company.logo,
+          name: job.company.name,
+          location: job.company.location,
+        },
+        salary: {
+          amount: job.salary.amount.toString(),
+          frequency: job.salary.frequency,
+        },
       });
 
-      setTags(formattedTags);
+      setTags(
+        job.skills.map((skill) => ({
+          text: skill,
+          id: skill,
+        }))
+      );
     }
   }, [job, form]);
 
@@ -129,7 +136,7 @@ export default function EditJobForm({ jobId }: { jobId: string }) {
 
         <FormField
           control={form.control}
-          name="salary"
+          name="salary.amount"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Salary (no comma) </FormLabel>
@@ -143,7 +150,7 @@ export default function EditJobForm({ jobId }: { jobId: string }) {
 
         <FormField
           control={form.control}
-          name="salaryFrequency"
+          name="salary.frequency"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Salary Frequency</FormLabel>
@@ -190,7 +197,10 @@ export default function EditJobForm({ jobId }: { jobId: string }) {
                   tags={tags}
                   setTags={(newTags) => {
                     setTags(newTags);
-                    setValue("skills", newTags as [Tag, ...Tag[]]);
+                    setValue(
+                      "skills",
+                      (newTags as Tag[]).map((tag: Tag) => tag.text)
+                    );
                   }}
                   activeTagIndex={activeTagIndex}
                   setActiveTagIndex={setActiveTagIndex}
@@ -203,7 +213,7 @@ export default function EditJobForm({ jobId }: { jobId: string }) {
 
         <FormField
           control={form.control}
-          name="companyName"
+          name="company.name"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Company Name</FormLabel>
@@ -217,7 +227,7 @@ export default function EditJobForm({ jobId }: { jobId: string }) {
 
         <FormField
           control={form.control}
-          name="companyLogo"
+          name="company.logo"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Company Logo URL</FormLabel>
@@ -231,7 +241,7 @@ export default function EditJobForm({ jobId }: { jobId: string }) {
 
         <FormField
           control={form.control}
-          name="companyLocation"
+          name="company.location"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Company Location</FormLabel>
@@ -242,7 +252,6 @@ export default function EditJobForm({ jobId }: { jobId: string }) {
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="employmentType"
@@ -256,10 +265,11 @@ export default function EditJobForm({ jobId }: { jobId: string }) {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="Full_time">Full-time</SelectItem>
-                  <SelectItem value="Part_time">Part-time</SelectItem>
-                  <SelectItem value="Internship">Internship</SelectItem>
-                  <SelectItem value="Contract">Contract</SelectItem>
+                  <SelectItem value="FULL_TIME">Full-time</SelectItem>
+                  <SelectItem value="PART_TIME">Part-time</SelectItem>
+                  <SelectItem value="INTERSHIP">Internship</SelectItem>
+                  <SelectItem value="CONTRACT">Contract</SelectItem>
+                  <SelectItem value="FREELANCE">Freelance</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />
@@ -280,9 +290,9 @@ export default function EditJobForm({ jobId }: { jobId: string }) {
                   </SelectTrigger>
                 </FormControl>
                 <SelectContent>
-                  <SelectItem value="On_site">On-site</SelectItem>
-                  <SelectItem value="Remote">Remote</SelectItem>
-                  <SelectItem value="Hybrid">Hybrid</SelectItem>
+                  <SelectItem value="ONSITE">On-site</SelectItem>
+                  <SelectItem value="REMOTE">Remote</SelectItem>
+                  <SelectItem value="HYBRID">Hybrid</SelectItem>
                 </SelectContent>
               </Select>
               <FormMessage />

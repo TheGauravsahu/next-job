@@ -14,8 +14,9 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Button } from "@/components/ui/button";
 import { useAuthStore } from "@/store/auth";
+import { useUpdateProfile } from "@/hooks/useAuth";
+import LoadingButton from "@/components/general/loading-button";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "Name must be at least 2 characters." }),
@@ -23,22 +24,23 @@ const formSchema = z.object({
     .string()
     .email({ message: "Please enter a valid email address." })
     .min(5, { message: "Email must be at least 5 characters." }),
-  role: z.enum(["APPLICANT", "EMPLOYER"], {
+  role: z.enum(["USER", "EMPLOYER"], {
     required_error: "Please select a role.",
   }),
 });
 
-export type EditFormValues = z.infer<typeof formSchema>;
+export type EditProfileFormValues = z.infer<typeof formSchema>;
 
 export default function EditProfileForm() {
   const { user } = useAuthStore();
+  const { mutate, isPending } = useUpdateProfile();
 
-  const form = useForm<EditFormValues>({
+  const form = useForm<EditProfileFormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
       email: "",
-      role: "APPLICANT",
+      role: (user?.role as "USER" | "EMPLOYER") || "USER",
     },
   });
 
@@ -46,13 +48,17 @@ export default function EditProfileForm() {
     if (user) {
       form.setValue("name", user.name);
       form.setValue("email", user.email);
-      form.setValue("role", user.role as "APPLICANT" | "EMPLOYER");
+      form.setValue("role", user.role as "USER" | "EMPLOYER");
     }
   }, [user, form]);
 
+  const onSubmit = (data: EditProfileFormValues) => {
+    mutate(data);
+  };
+
   return (
     <Form {...form}>
-      <form className="space-y-4">
+      <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name="name"
@@ -60,7 +66,7 @@ export default function EditProfileForm() {
             <FormItem>
               <FormLabel>Name</FormLabel>
               <FormControl>
-                <Input placeholder="John Doe" {...field} disabled />
+                <Input placeholder="John Doe" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -74,7 +80,7 @@ export default function EditProfileForm() {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder="john@example.com" {...field} disabled />
+                <Input placeholder="john@example.com" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -95,13 +101,13 @@ export default function EditProfileForm() {
                 >
                   <FormItem className="flex items-center">
                     <FormControl>
-                      <RadioGroupItem value="APPLICANT" disabled />
+                      <RadioGroupItem value="USER" />
                     </FormControl>
-                    <FormLabel className="font-normal">Applicant</FormLabel>
+                    <FormLabel className="font-normal">User</FormLabel>
                   </FormItem>
                   <FormItem className="flex items-center">
                     <FormControl>
-                      <RadioGroupItem value="EMPLOYER" disabled />
+                      <RadioGroupItem value="EMPLOYER" />
                     </FormControl>
                     <FormLabel className="font-normal">Employer</FormLabel>
                   </FormItem>
@@ -112,9 +118,9 @@ export default function EditProfileForm() {
           )}
         />
 
-        <Button disabled variant="gradient" className="w-full my-2">
+        <LoadingButton isLoading={isPending} loadingText="Saving changes">
           Save changes
-        </Button>
+        </LoadingButton>
       </form>
     </Form>
   );

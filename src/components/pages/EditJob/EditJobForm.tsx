@@ -27,8 +27,10 @@ import { useEditJob, useJobDetails } from "@/hooks/useJob";
 import { Loader2 } from "lucide-react";
 
 export default function EditJobForm({ jobId }: { jobId: string }) {
-  const { data: job, isPending, error } = useJobDetails(jobId);
+  const { data, isPending, error } = useJobDetails(jobId);
   const editJobMutation = useEditJob(jobId);
+
+  const job = data?.job;
 
   const [tags, setTags] = React.useState<Tag[]>([]);
   const [activeTagIndex, setActiveTagIndex] = React.useState<number | null>(

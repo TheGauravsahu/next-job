@@ -7,7 +7,7 @@ export type EmploymentType =
   | "FULL_TIME"
   | "PART_TIME"
   | "CONTRACT"
-  | "INTERNSHIP"
+  | "INTERNSHIP";
 export type WorkplaceType = "ONSITE" | "REMOTE" | "HYBRID";
 
 export interface JobSummaryType {
@@ -38,5 +38,11 @@ export interface JobDetailsType extends JobSummaryType {
     role: string;
   };
 }
+
+export interface JobByIdType {
+  job: JobDetailsType;
+  hasApplied: boolean;
+}
+
 export type CreateJobFormValues = z.infer<typeof createJobSchema>;
 export type EditJobFormValues = z.infer<typeof editJobSchema>;

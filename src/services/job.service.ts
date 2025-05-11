@@ -36,3 +36,7 @@ export const getJobById = async (id: string) => {
 export const deleteJob = async (id: string) => {
   return (await api.delete("/jobs/" + id)).data;
 };
+
+export const applyToJob = async (jobId: string) => {
+  return (await api.post("/jobs/" + jobId + "/apply")).data;
+};

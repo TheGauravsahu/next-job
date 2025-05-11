@@ -82,6 +82,7 @@ export const useLogout = () => {
   return useMutation({
     mutationFn: logoutUser,
     onSuccess: async (data) => {
+      Cookies.remove("token");
       logout();
       router.refresh();
       toast.success(data.message);
@@ -102,7 +103,7 @@ export const useUpdateProfile = () => {
     onSuccess: async ({ data }) => {
       toast.success("Profile updated successfully.");
       setUser(data.user);
-      router.push("/")
+      router.push("/");
     },
     onError: (error: APIError) => {
       console.log(error);

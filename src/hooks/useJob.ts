@@ -1,4 +1,5 @@
 import {
+  applyToJob,
   createJob,
   deleteJob,
   editJob,
@@ -9,7 +10,7 @@ import { APIError } from "@/types/auth.types";
 import {
   CreateJobFormValues,
   EditJobFormValues,
-  JobDetailsType,
+  JobByIdType,
   JobSummaryType,
 } from "@/types/job.types";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -53,7 +54,7 @@ export const useCreateJob = () => {
 };
 
 export const useJobDetails = (id: string) => {
-  return useQuery<JobDetailsType>({
+  return useQuery<JobByIdType>({
     queryKey: ["jobs", id],
     queryFn: () => getJobById(id),
     staleTime: 1000 * 60 * 5,
@@ -104,6 +105,23 @@ export const useDeleteJob = (jobId: string) => {
     onError: (error: APIError) => {
       console.log(error);
       toast.error(error.response?.data?.message || "Failed to delete job.");
+    },
+  });
+};
+
+export const useApplyToJob = (jobId: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: () => applyToJob(jobId),
+    onSuccess: (data: { message: string }) => {
+      // console.log(data);
+      toast.success(data.message);
+      queryClient.invalidateQueries({ queryKey: ["jobs", jobId] });
+    },
+    onError: (error: APIError) => {
+      console.log(error);
+      toast.error(error.response?.data?.message || "Failed to apply to job.");
     },
   });
 };

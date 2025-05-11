@@ -17,6 +17,16 @@ export default function JobsList() {
       {data.map((job) => (
         <JobCard key={job._id} job={job} />
       ))}
+      {!isPending && data.length === 0 && (
+        <div className="flex flex-col items-center justify-center w-full h-screen">
+          <h1 className="text-2xl font-bold text-gray-800 dark:text-gray-200">
+            No jobs found
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400">
+            Please check back later or try again.
+          </p>
+        </div>
+      )}
     </div>
   );
 }

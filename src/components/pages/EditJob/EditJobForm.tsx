@@ -1,6 +1,6 @@
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { EditJobFormValues } from "@/types/job.types";
 import {
@@ -24,13 +24,31 @@ import LoadingButton from "@/components/general/loading-button";
 import { TagInput, Tag } from "emblor";
 import { editJobSchema } from "./EditJobSchema";
 import { useEditJob, useJobDetails } from "@/hooks/useJob";
-import { Loader2 } from "lucide-react";
+import { useAuthStore } from "@/store/auth";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import Loader from "@/components/general/loader";
 
 export default function EditJobForm({ jobId }: { jobId: string }) {
   const { data, isPending, error } = useJobDetails(jobId);
-  const editJobMutation = useEditJob(jobId);
+  const [isChecking, setIsChecking] = useState(true);
+
+  const { user } = useAuthStore();
+  const router = useRouter();
 
   const job = data?.job;
+
+  useEffect(() => {
+    if (job) {
+      if (user?.role !== "EMPLOYER" || job?.employer._id !== user._id) {
+        router.push("/jobs/" + jobId);
+        toast.error("You are not authorized to edit this job.");
+      }
+      setIsChecking(false);
+    }
+  }, [job, user, setIsChecking]);
+
+  const editJobMutation = useEditJob(jobId);
 
   const [tags, setTags] = React.useState<Tag[]>([]);
   const [activeTagIndex, setActiveTagIndex] = React.useState<number | null>(
@@ -95,11 +113,10 @@ export default function EditJobForm({ jobId }: { jobId: string }) {
     form.reset();
   }
 
-  if (isPending)
+  if (isChecking || isPending)
     return (
       <div className="h-screen w-full flex items-center justify-center">
-        <Loader2 className="w-8 h-8  animate-spin text-blue-700" />
-        <span className="sr-only">Loading...</span>
+        <Loader />
       </div>
     );
 

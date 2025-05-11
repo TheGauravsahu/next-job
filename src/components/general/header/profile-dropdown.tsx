@@ -12,7 +12,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, User } from "lucide-react";
+import { LayoutDashboardIcon, LogOut, User } from "lucide-react";
 import Link from "next/link";
 
 export default function ProfileDropdown() {
@@ -44,6 +44,12 @@ export default function ProfileDropdown() {
               <DropdownMenuItem>
                 <User />
                 Profile
+              </DropdownMenuItem>
+            </Link>
+            <Link href="/dashboard">
+              <DropdownMenuItem>
+                <LayoutDashboardIcon />
+                Dashboard
               </DropdownMenuItem>
             </Link>
             <DropdownMenuItem onClick={() => logout()}>

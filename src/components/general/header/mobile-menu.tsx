@@ -61,7 +61,9 @@ export default function MobileMenu() {
           >
             For employers
           </Link>
-          <span onClick={toggleTheme}>Switch Theme</span>
+          <span className="cursor-pointer" onClick={toggleTheme}>
+            Switch Theme
+          </span>
         </div>
       )}
     </div>

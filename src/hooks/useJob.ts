@@ -3,7 +3,9 @@ import {
   createJob,
   deleteJob,
   editJob,
+  getAllEmployerJobs,
   getAllJobs,
+  getAllUserJobs,
   getJobById,
 } from "@/services/job.service";
 import { APIError } from "@/types/auth.types";
@@ -125,3 +127,24 @@ export const useApplyToJob = (jobId: string) => {
     },
   });
 };
+
+export const useEmployerJobs = () => {
+  return useQuery<JobSummaryType[]>({
+    queryFn: getAllEmployerJobs,
+    queryKey: ["employer-jobs"],
+  });
+};
+
+export const useUserJobs = () => {
+  return useQuery<JobSummaryType[]>({
+    queryFn: getAllUserJobs,
+    queryKey: ["user-jobs"],
+  });
+};
+
+// export const userGetJobAppliedCandidates = () => {
+//   return useQuery({
+//     queryFn:getJobApplicants,
+//     queryKey: ["jobs/applied-candidates"],
+//   });
+// };

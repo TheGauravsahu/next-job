@@ -40,3 +40,15 @@ export const deleteJob = async (id: string) => {
 export const applyToJob = async (jobId: string) => {
   return (await api.post("/jobs/" + jobId + "/apply")).data;
 };
+
+export const getAllEmployerJobs = async () => {
+  return (await api.get("/jobs/employer-jobs")).data.data;
+};
+
+export const getAllUserJobs = async () => {
+  return (await api.get("/jobs/user-jobs")).data.data;
+};
+
+// export const getJobApplicants = async (jobId: string) => {
+//   return await api.get("/jobs/" + jobId + "/applicants");
+// };

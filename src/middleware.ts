@@ -1,3 +1,4 @@
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 const PUBLIC_ROUTES = [
@@ -11,7 +12,7 @@ const PUBLIC_ROUTES = [
 ];
 
 export async function middleware(request: NextRequest) {
-  const token = request.cookies.get("token")?.value;
+  const token = (await cookies()).get("token")?.value;
   const { pathname } = request.nextUrl;
 
   const isPublicRoute = PUBLIC_ROUTES.includes(pathname);

@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { APIError } from "@/types/auth.types";
 import { EditProfileFormValues } from "@/components/pages/Profile/EditProfileForm";
+import Cookies from "js-cookie";
 
 export const useRegister = () => {
   const router = useRouter();
@@ -46,6 +47,7 @@ export const useLogin = (redirectTo: string) => {
 
       // console.log(data);
       setToken(data.token);
+      Cookies.set("token", data.token, { expires: 7 });
       setUser(data.user);
 
       router.push(redirectTo || "/");

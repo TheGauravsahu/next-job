@@ -1,3 +1,4 @@
+import DashboardBreadCrumb from "@/components/pages/Dashboard/DashboardBreadCrumb";
 import EmployerJobsTable from "@/components/pages/Dashboard/EmployerJobsTable";
 import UserAppliedJobsTable from "@/components/pages/Dashboard/UserAppliedJobsTable";
 import { auth } from "@/lib/auth";
@@ -14,6 +15,9 @@ export default async function DashboardPage() {
           Dashboard
         </span>
       </h1>
+      <div>
+        <DashboardBreadCrumb />
+      </div>
       <div>
         {user?.role === "EMPLOYER" ? (
           <EmployerJobsTable />

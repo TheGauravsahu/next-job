@@ -6,12 +6,14 @@ import {
   getAllEmployerJobs,
   getAllJobs,
   getAllUserJobs,
+  getJobApplicants,
   getJobById,
 } from "@/services/job.service";
 import { APIError } from "@/types/auth.types";
 import {
   CreateJobFormValues,
   EditJobFormValues,
+  JobApplicant,
   JobByIdType,
   JobSummaryType,
 } from "@/types/job.types";
@@ -142,9 +144,9 @@ export const useUserJobs = () => {
   });
 };
 
-// export const userGetJobAppliedCandidates = () => {
-//   return useQuery({
-//     queryFn:getJobApplicants,
-//     queryKey: ["jobs/applied-candidates"],
-//   });
-// };
+export const useJobApplicants = (jobId: string) => {
+  return useQuery<JobApplicant[]>({
+    queryFn: () => getJobApplicants(jobId),
+    queryKey: ["jobs-applicants", jobId],
+  });
+};

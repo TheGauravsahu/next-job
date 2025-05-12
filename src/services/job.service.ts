@@ -49,6 +49,6 @@ export const getAllUserJobs = async () => {
   return (await api.get("/jobs/user-jobs")).data.data;
 };
 
-// export const getJobApplicants = async (jobId: string) => {
-//   return await api.get("/jobs/" + jobId + "/applicants");
-// };
+export const getJobApplicants = async (jobId: string) => {
+  return (await api.get("/jobs/" + jobId + "/applicants")).data.data;
+};

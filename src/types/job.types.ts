@@ -44,5 +44,12 @@ export interface JobByIdType {
   hasApplied: boolean;
 }
 
+export interface JobApplicant {
+  _id: string;
+  name: string;
+  email: string;
+  role: string;
+}
+
 export type CreateJobFormValues = z.infer<typeof createJobSchema>;
 export type EditJobFormValues = z.infer<typeof editJobSchema>;
